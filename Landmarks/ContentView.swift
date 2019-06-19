@@ -8,13 +8,13 @@
 
 import SwiftUI
 
-struct LandmarkGroup : View {
-    
+struct LandmarkListItem : View {
+    @EnvironmentObject var coordinator:Coordinator
     var landmarks:[Landmark]
     
     var body : some View {
         ForEach(landmarks.identified(by: \.id)) { landmark in
-            NavigationButton(destination: LandmarkDetail(landmark: landmark)) {
+            NavigationButton(destination: self.coordinator.selectLandmarkFromList(landmark: landmark)) {
                 LandmarkRow(landmark:landmark)
                 }.frame(maxHeight:200)
         }
@@ -23,19 +23,22 @@ struct LandmarkGroup : View {
 
 struct ContentView : View {
     
-    @EnvironmentObject var model:Model
+    @EnvironmentObject var coordinator:Coordinator
+    var model: Model {
+        return coordinator.model
+    }
     
     var body: some View {
         NavigationView {
             List {
                 if model.favoritesLandmarks.count > 0 {
                     Section(header:Text("Favorites")){
-                        LandmarkGroup(landmarks:model.favoritesLandmarks)
+                        LandmarkListItem(landmarks:model.favoritesLandmarks)
                     }
                 }
                 if model.otherLandmarks.count > 0 {
                     Section(header:Text("Others")){
-                        LandmarkGroup(landmarks:model.otherLandmarks)
+                        LandmarkListItem(landmarks:model.otherLandmarks)
                     }
                 }
             }
@@ -47,7 +50,7 @@ struct ContentView : View {
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(Model())
+        ContentView().environmentObject(Coordinator())
     }
 }
 #endif

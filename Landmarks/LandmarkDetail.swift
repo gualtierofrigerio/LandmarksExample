@@ -12,7 +12,11 @@ struct LandmarkDetail : View {
     
     var landmark:Landmark
     @State private var showMap = false
-    @EnvironmentObject var model:Model
+    @State private var showURLModal = false
+    @EnvironmentObject var coordinator:Coordinator
+    var model:Model {
+        return coordinator.model
+    }
     
     var body: some View {
         VStack {
@@ -21,8 +25,17 @@ struct LandmarkDetail : View {
             Text(landmark.park)
                 .font(.caption)
             ImageUtility.getImage(name: landmark.imageName)
-            NavigationButton(destination: WebView(urlString: landmark.url)) {
-                Text("Show on wikipedia")
+            if self.coordinator.openLinksInSafari {
+                Button(action: {
+                    self.coordinator.openLinkInSafari(urlString:self.landmark.url)
+                }) {
+                    Text("Show on wikipedia")
+                }
+            }
+            else {
+                PresentationButton(destination: self.coordinator.openLink(urlString: landmark.url)) {
+                    Text("Show on wikipedia")
+                }
             }
             Button(action: {
                 self.model.toggleFavorite(id: self.landmark.id)

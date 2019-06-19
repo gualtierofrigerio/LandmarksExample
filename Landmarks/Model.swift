@@ -8,11 +8,10 @@
 
 import Combine
 import Foundation
-import SwiftUI
 
-class Model : BindableObject {
+class Model {
     
-    var didChange = PassthroughSubject<Void, Never>()
+    var subject = PassthroughSubject<Void, Never>()
     
     private var landmarks = DataSource.defaultLandmarks
     var favoritesLandmarks:[Landmark] {
@@ -25,7 +24,7 @@ class Model : BindableObject {
     func toggleFavorite(id:Int) {
         if let index = getIndexOfItem(withId: id) {
             landmarks[index].isFavorite.toggle()
-            didChange.send()
+            subject.send()
         }
     }
 }
