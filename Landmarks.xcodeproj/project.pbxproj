@@ -35,6 +35,7 @@
 		2509292522B7C1FB002FFEF8 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2509292422B7C1FB002FFEF8 /* MapView.swift */; };
 		25492B2322B8D9F700B92A78 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25492B2222B8D9F700B92A78 /* WebView.swift */; };
 		25492B2522BA39E600B92A78 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25492B2422BA39E600B92A78 /* Model.swift */; };
+		25492B2722BA5E6200B92A78 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25492B2622BA5E6200B92A78 /* Coordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		2509292422B7C1FB002FFEF8 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		25492B2222B8D9F700B92A78 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		25492B2422BA39E600B92A78 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		25492B2622BA5E6200B92A78 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 			children = (
 				250928CD22B795D1002FFEF8 /* AppDelegate.swift */,
 				250928D122B795D1002FFEF8 /* ContentView.swift */,
+				25492B2622BA5E6200B92A78 /* Coordinator.swift */,
 				2509291C22B79679002FFEF8 /* DataSource.swift */,
 				2509291E22B796F1002FFEF8 /* Landmark.swift */,
 				2509292222B7BBB3002FFEF8 /* LandmarkDetail.swift */,
@@ -349,6 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25492B2722BA5E6200B92A78 /* Coordinator.swift in Sources */,
 				250928CE22B795D1002FFEF8 /* AppDelegate.swift in Sources */,
 				2509292522B7C1FB002FFEF8 /* MapView.swift in Sources */,
 				250928D022B795D1002FFEF8 /* SceneDelegate.swift in Sources */,
