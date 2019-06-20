@@ -20,35 +20,37 @@ struct LandmarkDetail : View {
     
     var body: some View {
         VStack {
-            Text(landmark.name)
-                .font(.title)
-            Text(landmark.park)
-                .font(.caption)
-            ImageUtility.getImage(name: landmark.imageName)
-            if self.coordinator.openLinksInSafari {
+            NavigationView {
+                Text(landmark.name)
+                    .font(.title)
+                Text(landmark.park)
+                    .font(.caption)
+                ImageUtility.getImage(name: landmark.imageName)
+                if self.coordinator.openLinksInSafari {
+                    Button(action: {
+                        self.coordinator.openLinkInSafari(urlString:self.landmark.url)
+                    }) {
+                        Text("Show on wikipedia")
+                    }
+                }
+                else {
+                    PresentationButton(destination: self.coordinator.openLink(urlString: landmark.url)) {
+                        Text("Show on wikipedia")
+                    }
+                }
                 Button(action: {
-                    self.coordinator.openLinkInSafari(urlString:self.landmark.url)
+                    self.model.toggleFavorite(id: self.landmark.id)
                 }) {
-                    Text("Show on wikipedia")
+                    Text("toggle favorite")
+                    }.padding()
+                Toggle(isOn:$showMap) {
+                    Text("Show map")
                 }
-            }
-            else {
-                PresentationButton(destination: self.coordinator.openLink(urlString: landmark.url)) {
-                    Text("Show on wikipedia")
+                if self.showMap {
+                    MapView(coordinate: landmark.locationCoordinate)
                 }
+                Spacer()
             }
-            Button(action: {
-                self.model.toggleFavorite(id: self.landmark.id)
-            }) {
-                Text("toggle favorite")
-            }.padding()
-            Toggle(isOn:$showMap) {
-                Text("Show map")
-            }
-            if self.showMap {
-                MapView(coordinate: landmark.locationCoordinate)
-            }
-            Spacer()
         }
     }
 }
