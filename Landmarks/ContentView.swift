@@ -30,19 +30,25 @@ struct ContentView : View {
     
     var body: some View {
         NavigationView {
-            List {
-                if model.favoritesLandmarks.count > 0 {
-                    Section(header:Text("Favorites")){
-                        LandmarkListItem(landmarks:model.favoritesLandmarks)
+            TabbedView {
+                List {
+                    if model.favoritesLandmarks.count > 0 {
+                        Section(header:Text("Favorites")){
+                            LandmarkListItem(landmarks:model.favoritesLandmarks)
+                        }
+                    }
+                    if model.otherLandmarks.count > 0 {
+                        Section(header:Text("Others")){
+                            LandmarkListItem(landmarks:model.otherLandmarks)
+                        }
                     }
                 }
-                if model.otherLandmarks.count > 0 {
-                    Section(header:Text("Others")){
-                        LandmarkListItem(landmarks:model.otherLandmarks)
-                    }
-                }
-            }
-            .navigationBarTitle(Text("Landmarks"))
+                    .tabItemLabel(Text("List"))
+                    .tag(1)
+                LandmarksMap(landmarks: model.allLandmarks)
+                    .tabItemLabel(Text("Map"))
+                    .tag(2)
+            }.navigationBarTitle(Text("Landmarks"))
         }
     }
 }

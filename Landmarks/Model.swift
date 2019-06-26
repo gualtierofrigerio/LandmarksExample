@@ -14,11 +14,23 @@ class Model {
     var subject = PassthroughSubject<Void, Never>()
     
     private var landmarks = DataSource.defaultLandmarks
+    var allLandmarks:[Landmark] {
+        return landmarks
+    }
     var favoritesLandmarks:[Landmark] {
         return landmarks.filter({$0.isFavorite == true})
     }
     var otherLandmarks:[Landmark] {
         return landmarks.filter({$0.isFavorite == false})
+    }
+    
+    func getLandmark(withName name:String) -> Landmark? {
+        for landmark in landmarks {
+            if landmark.name == name {
+                return landmark
+            }
+        }
+        return nil
     }
     
     func toggleFavorite(id:Int) {

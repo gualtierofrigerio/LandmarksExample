@@ -12,23 +12,35 @@ import SwiftUI
 
 struct MapView : UIViewRepresentable {
     
-    var coordinate:CLLocationCoordinate2D
+    var landmarks:[Landmark]
+    var annotations:[MapAnnotation] {
+        landmarks.map {MapAnnotation(coordinate:$0.locationCoordinate, title:$0.name)}
+    }
+    var delegate:MapViewDelegate
     
     func makeUIView(context: Context) -> MKMapView {
-        return MKMapView(frame: .zero)
+        let mapView = MKMapView(frame: .zero)
+        mapView.delegate = delegate
+        return mapView
     }
     
     func updateUIView(_ view: MKMapView, context: UIViewRepresentableContext<MapView>) {
-        let span = MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0)
-        let region = MKCoordinateRegion(center: coordinate, span: span)
-        view.setRegion(region, animated: true)
+        if landmarks.count == 1 {
+            let span = MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0)
+            let region = MKCoordinateRegion(center: landmarks[0].locationCoordinate, span: span)
+            view.setRegion(region, animated: true)
+            view.addAnnotation(annotations[0])
+        }
+        else {
+            view.showAnnotations(annotations, animated: true)
+        }
     }
 }
 
 #if DEBUG
 struct MapView_Previews : PreviewProvider {
     static var previews: some View {
-        MapView(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0))
+        MapView(landmarks: DataSource.defaultLandmarks, delegate: MapViewDelegate())
     }
 }
 #endif

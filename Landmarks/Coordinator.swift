@@ -14,11 +14,13 @@ class Coordinator : BindableObject {
     var didChange = PassthroughSubject<Void, Never>()
     var model = Model()
     var openLinksInSafari = false
+    var mapViewDelegate = MapViewDelegate()
     
     init() {
         _ = model.subject.sink(receiveValue: { _ in
             self.didChange.send()
         })
+        mapViewDelegate.coordinator = self
     }
     
     func selectLandmarkFromList(landmark:Landmark) -> some View {
@@ -33,5 +35,13 @@ class Coordinator : BindableObject {
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url)
         }
+    }
+    
+    func selectAnnotationWithTitle(_ title:String) {
+        guard let landmark = model.getLandmark(withName: title) else {return}
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {return}
+        let landmarkDetail = LandmarkDetail(landmark: landmark)
+        let hosting = UIHostingController(rootView: landmarkDetail.environmentObject(self))
+        rootViewController.present(hosting, animated: true, completion: nil)
     }
 }

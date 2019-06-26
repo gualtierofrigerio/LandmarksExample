@@ -19,39 +19,53 @@ struct LandmarkDetail : View {
     }
     
     var body: some View {
-        VStack {
-            NavigationView {
-                Text(landmark.name)
-                    .font(.title)
-                Text(landmark.park)
-                    .font(.caption)
-                ImageUtility.getImage(name: landmark.imageName)
-                if self.coordinator.openLinksInSafari {
+        NavigationView {
+            VStack {
+                Group {
+                    Text(landmark.name)
+                        .font(.largeTitle)
+                    Text(landmark.park)
+                        .font(.caption)
+                    ImageUtility.getImage(name: landmark.imageName)
+                    if self.coordinator.openLinksInSafari {
+                        Button(action: {
+                            self.coordinator.openLinkInSafari(urlString:self.landmark.url)
+                        }) {
+                            Text("Show on wikipedia")
+                        }
+                    }
+                    else {
+                        Button(action: {
+                            self.showURLModal.toggle()
+                        }) {
+                            Text("Show on wikipedia")
+                        }
+                    }
                     Button(action: {
-                        self.coordinator.openLinkInSafari(urlString:self.landmark.url)
+                        self.model.toggleFavorite(id: self.landmark.id)
                     }) {
-                        Text("Show on wikipedia")
+                        Text("toggle favorite")
+                        }.padding()
+                    Toggle(isOn:$showMap) {
+                        Text("Show map")
                     }
-                }
-                else {
-                    PresentationButton(destination: self.coordinator.openLink(urlString: landmark.url)) {
-                        Text("Show on wikipedia")
-                    }
-                }
-                Button(action: {
-                    self.model.toggleFavorite(id: self.landmark.id)
-                }) {
-                    Text("toggle favorite")
-                    }.padding()
-                Toggle(isOn:$showMap) {
-                    Text("Show map")
                 }
                 if self.showMap {
-                    MapView(coordinate: landmark.locationCoordinate)
+                    MapView(landmarks: [self.landmark], delegate: coordinator.mapViewDelegate)
                 }
-                Spacer()
             }
         }
+            .edgesIgnoringSafeArea(.top)
+            .presentation(getLinkModal())
+    }
+    
+    func getLinkModal() -> Modal? {
+        if self.showURLModal {
+            return Modal(WebView(urlString: self.landmark.url), onDismiss: {
+                self.showURLModal = false
+            })
+        }
+        return nil
     }
 }
 
