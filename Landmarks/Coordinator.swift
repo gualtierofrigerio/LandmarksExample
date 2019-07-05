@@ -24,7 +24,7 @@ class Coordinator : BindableObject {
     }
     
     func selectLandmarkFromList(landmark:Landmark) -> some View {
-        LandmarkDetail(landmark: landmark)
+        LandmarkDetail(landmark: landmark).environmentObject(self)
     }
     
     func openLink(urlString:String) -> some View {

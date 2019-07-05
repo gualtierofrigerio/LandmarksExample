@@ -14,7 +14,7 @@ struct LandmarkListItem : View {
     
     var body : some View {
         ForEach(landmarks.identified(by: \.id)) { landmark in
-            NavigationButton(destination: self.coordinator.selectLandmarkFromList(landmark: landmark)) {
+            NavigationLink(destination: self.coordinator.selectLandmarkFromList(landmark: landmark)) {
                 LandmarkRow(landmark:landmark)
                 }.frame(maxHeight:200)
         }
@@ -49,6 +49,8 @@ struct ContentView : View {
                     .tabItemLabel(Text("Map"))
                     .tag(2)
             }.navigationBarTitle(Text("Landmarks"))
+        }.onAppear() {
+            print("on appear")
         }
     }
 }
